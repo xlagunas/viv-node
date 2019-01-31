@@ -23,8 +23,9 @@ function onJoinRoom(socket) {
 //data message should contain: from, to, content
 function handleDirectMessage(socket) {
     socket.on('DIRECT_MESSAGE', (data) => {
-        logMessage(socket, 'Direct message sent to [' + data.to + ']');
-        socket.to(data.to).emit('DIRECT_MESSAGE', data)
+        const jsonData = JSON.parse(data);
+        logMessage(socket, 'Direct message sent to [' + jsonData.to + '] of type: ['+jsonData.type+']');
+        socket.to(jsonData.to).emit('DIRECT_MESSAGE', data)
     });
 }
 
