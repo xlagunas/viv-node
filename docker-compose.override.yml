@@ -1,0 +1,8 @@
+# DEV ONLY — `docker compose` el fusiona sobre docker-compose.yml automàticament.
+# El deploy NOMÉS copia docker-compose.yml al VPS, així que això MAI arriba a prod.
+# En DEV: construeix la imatge localment i publica el port 3000 al host.
+services:
+  viv-node:
+    build: .
+    ports:
+      - "3000:3000"

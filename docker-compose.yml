@@ -1,0 +1,19 @@
+# BASE (= PRODUCCIÓ). És l'únic fitxer que el deploy copia al VPS.
+# El servei es diu "viv-node" perquè el Caddyfile de xlagunas-infra fa
+# reverse_proxy viv-node:3000. NO publica cap port al host: Caddy hi
+# arriba per la xarxa "web". En DEV, docker-compose.override.yml hi
+# afegeix `build: .` i publica el port 3000 al host.
+services:
+  viv-node:
+    image: ghcr.io/xlagunas/viv-node:${APP_TAG:-latest}
+    restart: unless-stopped
+    mem_limit: 256m
+    expose:
+      - "3000"            # port INTERN; no es publica a l'amfitrió (Caddy hi arriba per la xarxa)
+    networks:
+      - web               # perquè Caddy hi arribi (resol per l'àlies "viv-node")
+
+# La xarxa "web" la CREA l'infra (xlagunas-infra). Aquí és external.
+networks:
+  web:
+    external: true
